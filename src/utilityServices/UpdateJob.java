@@ -1,0 +1,244 @@
+package utilityServices;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.*;
+import javax.swing.JCheckBox;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Random;
+
+public class UpdateJob extends JFrame  implements ActionListener {
+    JTextField usernameInput, updateJob,  updateEducation , userSalaryInput,userAddressInput,userNumberInput,userEmailInput,userdesignationInput,userYearInput;
+      JLabel updateuserId;
+    JButton addDetails,back;
+
+    String user_id;
+
+    UpdateJob(String user_id){
+        this.user_id = user_id;
+        setLayout(null);
+        getContentPane().setBackground(Color.white);
+
+
+        JLabel heading = new JLabel("Update Job Detail");
+        heading.setBounds(320,30,500,50);
+        heading.setFont(new Font("SAN_SERIF",Font.BOLD,25));
+        add(heading);
+
+        JLabel joyType = new JLabel("JOB");
+        joyType.setBounds(50,150,150,30);
+        joyType.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(joyType);
+
+
+         updateJob = new JTextField();
+        updateJob.setBounds(200,150,150,30);
+        updateJob.setBackground(Color.WHITE);
+        add(updateJob);
+
+
+        JLabel userName = new JLabel("Name");
+        userName.setBounds(400,150,150,30);
+        userName.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userName);
+
+          usernameInput = new JTextField();
+        usernameInput.setBounds(600,150,150,30);
+        add(usernameInput);
+
+        JLabel dateBirth = new JLabel("DateBirth");
+        dateBirth.setBounds(50,200,150,30);
+        dateBirth.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(dateBirth);
+
+         JLabel updateDb = new JLabel();
+        updateDb.setBounds(200,200,150,30);
+        add(updateDb);
+
+        JLabel userSalary = new JLabel("Salary");
+        userSalary.setBounds(400,200,150,30);
+        userSalary.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userSalary);
+
+        userSalaryInput = new JTextField();
+        userSalaryInput .setBounds(600,200,150,30);
+        add( userSalaryInput );
+
+
+        JLabel userAddress = new JLabel("Address");
+        userAddress.setBounds(50,250,150,30);
+        userAddress.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userAddress);
+
+        userAddressInput = new JTextField();
+        userAddressInput.setBounds(200,250,150,30);
+        add( userAddressInput );
+
+
+        JLabel userNumber = new JLabel("Phone");
+        userNumber.setBounds(400,250,150,30);
+        userNumber.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userNumber);
+
+         userNumberInput = new JTextField();
+        userNumberInput.setBounds(600,250,150,30);
+        add( userNumberInput );
+
+
+        JLabel userEmail = new JLabel("Email");
+        userEmail.setBounds(50,300,150,30);
+        userEmail.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userEmail);
+
+        userEmailInput = new JTextField();
+        userEmailInput.setBounds(200,300,150,30);
+        add( userEmailInput );
+
+
+        JLabel userEducation = new JLabel("Highest Education");
+        userEducation.setBounds(400,300,150,30);
+        userEducation.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userEducation);
+
+
+         updateEducation = new JTextField();
+         updateEducation.setBounds(600,300,150,30);
+        add(updateEducation);
+
+
+
+        JLabel userDesignation = new JLabel("Designation");
+        userDesignation.setBounds(50,350,150,30);
+        userDesignation.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userDesignation);
+
+        userdesignationInput = new JTextField();
+        userdesignationInput.setBounds(200,350,150,30);
+        add( userdesignationInput );
+
+
+        JLabel updateUserYear = new JLabel("Years Experiences");
+        updateUserYear.setBounds(400,350,150,30);
+        add(updateUserYear) ;
+
+        userYearInput = new JTextField();
+        userYearInput.setBounds(600,350,150,30);
+        add( userYearInput );
+
+        JLabel userID = new JLabel("UserID");
+        userID.setBounds(50,400,150,30);
+        userID.setFont(new Font("serif",Font.PLAIN,20 ));
+        add(userID) ;
+
+        updateuserId = new JLabel();
+        updateuserId.setBounds(200,400,150,30);
+        add( updateuserId  );
+
+        try {
+            MyConnection connection = new MyConnection();
+            String query = "select * from jobs where user_id = '"+user_id+"' ";
+           ResultSet rs = connection.getStatement().executeQuery(query);
+           while (rs.next()){
+               usernameInput.setText(rs.getString("name"));
+               //updateDb.setText(rs.getString("date_birth"));
+               userAddressInput.setText(rs.getString("address"));
+               userSalaryInput.setText(rs.getString("salary"));
+               userEmailInput.setText(rs.getString("email"));
+               userNumberInput.setText(rs.getString("phone"));
+               updateEducation.setText(rs.getString("education"));
+               userdesignationInput.setText(rs.getString("designation"));
+              // updateuserId.setText(rs.getString("user_id"));
+               updateJob.setText(rs.getString("job_type"));
+               userYearInput.setText(rs.getString("experiences"));
+           }
+
+        } catch (Exception e){
+           e.printStackTrace();
+        }
+
+
+        //Button:
+        addDetails = new JButton("Update");
+        addDetails .setBounds(250,550,150,40);
+        addDetails.addActionListener(this);
+        addDetails .setBackground(Color.BLACK);
+        addDetails .setForeground(Color.white);
+        add(addDetails);
+
+
+        back = new JButton("Back");
+        back.setBounds(450,550,150,40);
+        back.addActionListener(this);
+        back.setBackground(Color.BLACK);
+        back.setForeground(Color.white);
+        add(back);
+
+
+
+        setSize(900,700);
+        setLocation(300,50);
+        setTitle("UpdateJobPage");
+        setVisible(true);
+    }
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == addDetails){
+            String name = usernameInput.getText();
+            String job_type = updateJob.getText();
+            String salary = userSalaryInput.getText();
+            String address = userAddressInput.getText();
+            String phone = userNumberInput.getText();
+            String email = userEmailInput.getText();
+            String education = updateEducation.getText();
+            String designation = userdesignationInput.getText();
+            String experiences = userYearInput.getText();
+            //String user_id = userIDInput.getText();
+
+
+            try{
+                MyConnection conn = new MyConnection();
+                String addJobQuery =  "UPDATE Jobs SET name=?, job_type=?,     salary=?, address=?, phone=?, email=?, education=?, designation=?, experiences=? WHERE user_id=?";
+                PreparedStatement statement = conn.getConnection().prepareStatement(addJobQuery);
+                //statement.setString(1,job_type);
+                statement.setString(1,name);
+                 statement.setString(2,job_type);
+                statement.setString(3,salary);
+                statement.setString(4,address);
+                statement.setString(5,phone);
+                statement.setString(6,email);
+                statement.setString(7,education);
+                statement.setString(8,designation);
+                statement.setString(9,experiences);
+                statement.setString(10,user_id);
+                //statement.setString(11,user_id);
+                int rowInserted = statement.executeUpdate();
+                //let check condition for the user:
+                if (rowInserted > 0){
+                    JOptionPane.showMessageDialog(null, "Details Updated successful!");
+                    setVisible(false);
+                    new DashBoard();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Details Updated  failed!");
+                }
+
+            } catch (SQLException e){
+                JOptionPane.showMessageDialog(null, "Error occurred: " + e.getMessage());
+                e.printStackTrace();
+
+            }
+
+
+        } else {
+            setVisible(false);
+            new DashBoard();
+        }
+    }
+
+
+}
+
+
